@@ -16,13 +16,20 @@ typedef std::vector<int> vector_data;
 class Vector{
     private:
         vector_data vector;
+        int size;
     public:
-        Vector() {}
-        Vector(vector_data& vector): vector(vector) {}
-        Vector(const std::size_t size, const int initial_value) {}
+        Vector();
+        Vector(const vector_data vector);
+        Vector::Vector(const std::size_t size);
+        Vector(const std::size_t size, const int initial_value);
+        void resize(const std::size_t size, const int initial_value = 0);
 
-        vector_data inline getData() const;
-        int inline getSize() const;
+        vector_data inline getData() const {
+            return this->vector;
+        }
+        int inline getSize() const {
+            return this->vector.size();
+        }
         void printData() const;
 
         int operator*(Vector &vector_B) const throw (char*);

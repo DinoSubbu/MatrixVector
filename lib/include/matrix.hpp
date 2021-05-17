@@ -10,7 +10,7 @@ Created By: Dinesh Subhuraaj
 #include<vector>
 #include<numeric>
 #include<algorithm>
-#include "vector.h"
+#include "vector.hpp"
 
 typedef std::vector<std::vector<int>> matrix_data;
 typedef std::vector<int> matrix_row;
@@ -18,16 +18,19 @@ typedef std::vector<int> matrix_row;
 class Matrix{
     private:
         matrix_data matrix;
+        int noOfRows, noOfColumns;
     public:
-        Matrix() {}
-        Matrix(matrix_data& matrix): matrix(matrix) {}
-        Matrix(const std::size_t noRows, const std::size_t noColumns) 
-            : Matrix(noRows, noColumns, 0) {}
-        Matrix(const std::size_t noRows, const std::size_t noColumns, const int initial_value) {}
+        Matrix();
+        Matrix(const std::size_t noRows, const std::size_t noColumns, const int initial_value);
+        Matrix(const std::size_t noRows, const std::size_t noColumns);
 
         void printData() const;
-        std::size_t inline getNoRows() const;
-        std::size_t inline getNoColumns() const;
+        std::size_t inline getNoRows() const {
+            return this->matrix.size();
+        }
+        std::size_t inline getNoColumns() const {
+            return this->matrix[0].size();
+        }
 
         Matrix operator*(Matrix &matrix_B) const throw (char*);
         Matrix operator*(const int scalar) throw (char*);

@@ -1,31 +1,25 @@
-#include "vector.h"
-#include "matrix.h"
+#include "vector.hpp"
+#include "matrix.hpp"
 
 int main(){
-    Matrix matrix_A(10, 10, 2);
-    Matrix matrix_B(10, 10, 4);
-    Matrix matrix_C = matrix_A + matrix_B;
-    matrix_C.printData();
+    try {
+        Matrix matrix_A(2, 2, 2);
+        Matrix matrix_B(2, 2, 4);
+        (matrix_A + matrix_B).printData();
+        (matrix_A * 5).printData();
+        (matrix_A * matrix_B).printData();
 
-    matrix_C = matrix_A * 5;
-    matrix_C.printData();
+        Vector vector_A(2, 1);
+        Vector vector_B(2, 2);
+        (vector_A + vector_B).printData();
+        (vector_A * 5).printData();
+        std::cout << "Vector-vector multiplication result: " << vector_A * vector_B << std::endl;
 
-    matrix_C = matrix_A * matrix_B;
-    matrix_C.printData();
-
-    Vector vector_A(10, 1);
-    Vector vector_B(10, 2);
-    Vector vector_C = vector_A + vector_B;
-    vector_C.printData();
-
-    vector_C = vector_A * 5;
-    vector_C.printData();
-
-    const int result = vector_A * vector_B;
-    std::cout << result << std::endl;
-
-    vector_C = matrix_A * vector_A;
-    vector_C.printData();
-
+        (matrix_A * vector_A).printData();
+    }
+    catch (char* error_message) {
+        std::cout << error_message << std::endl;
+    }
+   
     return 0;
 }

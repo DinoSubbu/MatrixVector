@@ -1,30 +1,27 @@
-#include "vector.h"
+#include "vector.hpp"
 
-Vector::Vector(const std::size_t size, const int initial_value) {
+Vector::Vector() : Vector::Vector(10, 0) {}
+
+Vector::Vector(const vector_data vector) : vector(vector), size(vector.size()) {}
+
+Vector::Vector(const std::size_t size) : Vector(size, 0) {}
+
+Vector::Vector(const std::size_t size, const int initial_value): size(size) {
     this->vector.resize(size);
     std::fill(this->vector.begin(), this->vector.end(), initial_value);
 }
 
 
 /*
-Function name: getData
-Description: This function returns a copy of the vector.
+Function name: resize
+Description: This function resizes the vector.
 Function parameters: none
-Return value: vector_data
-*/ 
-vector_data inline Vector::getData() const {
-    return this->vector;
-}
-
-
-/*
-Function name: getSize
-Description: This function returns the size of the vector.
-Function parameters: none
-Return value: int
-*/ 
-int inline Vector::getSize() const {
-    return this->vector.size();
+Return value: none
+*/
+void Vector::resize(const std::size_t size, const int initial_value) {
+    this->size = size;
+    this->vector.resize(size);
+    std::fill(this->vector.begin(), this->vector.end(), initial_value);
 }
 
 
@@ -36,8 +33,8 @@ Return value: none
 */ 
 void Vector::printData() const {
     std::cout<<"Printing Vector::"<<std::endl;
-    for(const auto element: this->vector)
-        std::cout<<element<< " ";
+    for(int i=0; i<size; ++i)
+        std::cout<<this->vector[i]<< " ";
     std::cout<<std::endl;
 }
 
@@ -49,10 +46,9 @@ Function parameters: vector_B: Vector& (This is the second vector to be multipli
 Return value: int 
 */
 int Vector::operator*(Vector& vector_B) const throw (char*) {    
-    if(this->vector.size() != vector_B.vector.size()) throw "Nonmatching dimensions";
+    if(size != vector_B.vector.size()) throw "Nonmatching dimensions";
     int result = std::inner_product(this->vector.begin(), this->vector.end(), 
                 vector_B.vector.begin(), 0);
-
     return result;
 }
 
@@ -64,11 +60,11 @@ Function parameters: scalar: int (This is the scalar to be multiplied with the v
 Return value: none 
 */
 Vector Vector::operator*(int scalar) throw (char*) {    
-    if(this->vector.empty()) throw "Empty vector";
-    for(int i=0; i<this->vector.size(); ++i){
-        this->vector[i] *= scalar;
+    Vector vector_result(size, 0);
+    for(int i=0; i<size; ++i){
+        vector_result.vector[i] = this->vector[i] * scalar;
     }
-    return this->vector;
+    return vector_result;
 }
 
 
@@ -79,9 +75,9 @@ Function parameters: vector_B: Vector& (This is the second vector to be added)
 Return value: Vector 
 */
 Vector Vector::operator+(Vector& vector_B) const throw (char*){
-    if(this->vector.size() != vector_B.vector.size()) throw "Nonmatching dimensions";
-    Vector vector_C;
-    for(int i=0; i<this->vector.size(); ++i)
+    if(size != vector_B.getSize()) throw "Nonmatching dimensions";
+    Vector vector_C(size, 0);
+    for(int i=0; i<size; ++i)
         vector_C.vector[i] = this->vector[i] + vector_B.vector[i];
     return vector_C;
 }
@@ -96,5 +92,7 @@ Return value: Vector
 Vector Vector::operator=(Vector& vector_B) {
     const std::size_t size = vector_B.getSize();
     this->vector.resize(size);
+    this->size = size;
     this->vector = vector_B.vector;
+    return *this;
 }
